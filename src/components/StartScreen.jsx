@@ -1,11 +1,10 @@
-import React from 'react'
+import Btn from './Btn';
 
-const StartScreen = () => {
-  return (
-    <div>
-      start screen
-    </div>
-  )
-}
+const StartScreen = ({ startGame }) => (
+  <>
+    <p>Тут должны быть правила игры, но я, может быть, напишу их позже. Успехов!</p>
+    <Btn onClick={startGame} title={'играть'} />
+  </>
+);
 
-export default StartScreen
+export default StartScreen;

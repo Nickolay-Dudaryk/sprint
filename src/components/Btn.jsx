@@ -1,7 +1,5 @@
 const Btn = ({ title, onClick }) => (
-  <button onClick={() => onClick()}>
-    {title}
-  </button>
-)
+  <button onClick={() => onClick()}>{title}</button>
+);
 
-export default Btn
+export default Btn;

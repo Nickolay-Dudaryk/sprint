@@ -1,11 +1,12 @@
-import React from 'react'
+import Btn from './Btn';
 
-const FinishScreen = () => {
-  return (
-    <div>
-      finish screen
-    </div>
-  )
-}
+const FinishScreen = ({ startGame, userCorrectAnswers, userWrongAnswers, userScore }) => (
+  <>
+    <div>Верно: {userCorrectAnswers.toString().split(',').join(', ')}</div>
+    <div>Ошибки: {userWrongAnswers.toString().split(',').join(', ')}</div>
+    <div>{userScore}</div>
+    <Btn onClick={startGame} title={'Играть'} />
+  </>
+);
 
-export default FinishScreen
+export default FinishScreen;
