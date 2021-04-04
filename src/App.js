@@ -9,17 +9,14 @@ import book1 from './hardcodeDb';
 
 
 const App = () => {
-  const [timerCounter, setTimerCounter] = React.useState(60);
+  const [timerCounter, setTimerCounter] = React.useState(20);
   const [enWordToCompare, setEnWordToCompare] = React.useState('');
   const [ruWordToCompare, setRuWordToCompare] = React.useState('');
-  const [enWordsObjId, setEnWordsObjId] = React.useState(null);
-  const [ruWordsObjId, setRuWordsObjId] = React.useState(null);
-  const [isIdentical, setIsIdentical] = React.useState(false);
+  const [enWordTranslate, setEnWordTranslate] = React.useState('');
   const [isGameOn, setIsGameOn] = React.useState(false);
   const [userCorrectAnswers, setUserCorrectAnswers] = React.useState([]);
   const [userWrongAnswers, setUserWrongAnswers] = React.useState([]);
   const [userScore, setUserScore] = React.useState(0);
-
 
   React.useEffect(() => {
     let timer;
@@ -36,60 +33,51 @@ const App = () => {
   }, [timerCounter]);
 
 
-  const randomIndex = () => Math.floor(Math.random() * book1.length);
+  React.useEffect(() => {
+    const obj1 = book1[randomIndex(book1)];
+    const obj2 = book1[randomIndex(book1)];
 
+    const enWordTranslate = obj1.wordTranslate;
+    const enWord = obj1.word;
+    const ruWord = obj2.wordTranslate;
 
-  const getEnWordToCompare = () => {
-    const rndmIdx1 = randomIndex();
-    setEnWordsObjId(rndmIdx1);
-    const randomItem = book1[rndmIdx1];
-    setEnWordToCompare(randomItem.word);
-  };
+    const arr = [ruWord, enWordTranslate];
+    
+    setRuWordToCompare(() => arr[randomIndex(arr)]);
+    setEnWordToCompare(() => enWord);
+    setEnWordTranslate(() => enWordTranslate);
+  }, []);
 
-
-  const getRuWordToCompare = () => {
-    const rndmIdx2 = randomIndex();
-    setRuWordsObjId(rndmIdx2);
-    const randomItem2 = book1[rndmIdx2];
-    setRuWordToCompare(randomItem2.wordTranslate); 
-  };
-
-
-  const isWordsIdentical = () => {
-    setIsIdentical(enWordsObjId === ruWordsObjId);
-  };
-
+  const randomIndex = (arr) => Math.floor(Math.random() * arr.length);
 
   const nextLevel = () => {
     if (timerCounter > 0) {
-      getEnWordToCompare();
-      getRuWordToCompare();
-      isWordsIdentical();
+      const obj1 = book1[randomIndex(book1)];
+      const obj2 = book1[randomIndex(book1)];
+  
+      const enWordTranslate = obj1.wordTranslate;
+      const enWord = obj1.word;
+      const ruWord = obj2.wordTranslate;
+  
+      const arr = [ruWord, enWordTranslate];
+      setRuWordToCompare(() => arr[randomIndex(arr)]);
+      setEnWordToCompare(() => enWord);
+      setEnWordTranslate(() => enWordTranslate);
     }
   };
 
 
-  // IF RUN OUT OF TIME => GAME OVER
-  // if(timerCounter < 1) {
-  //   setIsGameOn(false);
-  // };
-
-
   const startGame = () => {
     setIsGameOn(true);
-    setTimerCounter(10);
+    setTimerCounter(20);
     setUserScore(0);
     setUserCorrectAnswers([]);
     setUserWrongAnswers([]);
-
-    getEnWordToCompare();
-    getRuWordToCompare();
-    isWordsIdentical();
   };
 
 
   const yesClickHandler = () => {
-    if (isIdentical) {
+    if (ruWordToCompare === enWordTranslate) {
       setUserScore(s => s + 1);
       setUserCorrectAnswers([...userCorrectAnswers, enWordToCompare]);
     } else {
@@ -101,7 +89,7 @@ const App = () => {
 
 
   const noClickHandler = () => {
-    if (!isIdentical) {
+    if (ruWordToCompare !== enWordTranslate) {
       setUserScore(s => s + 1);
       setUserCorrectAnswers([...userCorrectAnswers, enWordToCompare]);
     } else {
@@ -118,13 +106,12 @@ const App = () => {
     screen = (
       <>
         <Timer timerCounter={timerCounter} />
+        <p>Очки: {userScore}</p>
         <CompareWords
           ruWordToCompare={ruWordToCompare}
           enWordToCompare={enWordToCompare}
-          isIdentical={isIdentical}
           yesClickHandler={yesClickHandler}
           noClickHandler={noClickHandler}
-          nextLevel={nextLevel}
         />
       </>
     )

@@ -4,7 +4,7 @@ const FinishScreen = ({ startGame, userCorrectAnswers, userWrongAnswers, userSco
   <>
     <div>Верно: {userCorrectAnswers.toString().split(',').join(', ')}</div>
     <div>Ошибки: {userWrongAnswers.toString().split(',').join(', ')}</div>
-    <div>{userScore}</div>
+    <div>Очки: {userScore}</div>
     <Btn onClick={startGame} title={'Играть'} />
   </>
 );
